@@ -14,6 +14,8 @@ namespace FANEngine
         private Matrix view;
         private Matrix projection;
 
+        private Vector3 position;
+
         public Matrix World
         {
             get { return world; }
@@ -29,30 +31,47 @@ namespace FANEngine
             get { return projection; }
         }
 
-        public Camera(Game game, Vector3 pos, Vector3 target, Vector3 up)
+        public Vector3 Position
+        {
+            get { return position; }
+        }
+
+        public Camera(Game game, Vector3 initialPos, Vector3 target, Vector3 up)
         {
             //world = Matrix.Identity;
             //view = CreateLookAt();
             //projection = CreatePerspectiveFieldOfView();
 
             world = Matrix.Identity;
-            view = Matrix.CreateLookAt(pos, target, up);
-            projection = CreatePerspectiveFieldOfView();
+            view = Matrix.CreateLookAt(initialPos, target, up);
+            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, game.GraphicsDevice.Viewport.AspectRatio, 0.1f, 100.0f);
+
+            position = initialPos;
             
         }
 
-        private Matrix CreateLookAt()
+        public void Update()
         {
-            Matrix v = Matrix.CreateLookAt(new Vector3(0, 0, 3), Vector3.Forward, Vector3.Up);
-
-            return v;
+            view = Matrix.CreateLookAt(position, Vector3.Forward, Vector3.Up);
         }
+
+        //private Matrix CreateLookAt()
+        //{
+        //    Matrix v = Matrix.CreateLookAt(new Vector3(0, 0, 3), Vector3.Forward, Vector3.Up);
+
+        //    return v;
+        //}
 
         private Matrix CreatePerspectiveFieldOfView()
         {
             Matrix p = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16 / 9f, 0.1f, 100.0f);
 
             return p;
+        }
+
+        public void MoveCamera(Vector3 v)
+        {
+            position += v;
         }
     }
 }

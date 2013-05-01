@@ -44,7 +44,7 @@ namespace FANEngine
         /// </summary>
         protected override void Initialize()
         {
-            camera = new Camera(this, new Vector3(0,0,5),Vector3.Zero,Vector3.Up);
+            camera = new Camera(this, new Vector3(0, 0, 5), Vector3.Forward, Vector3.Up);
 
             
             
@@ -169,18 +169,42 @@ namespace FANEngine
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if (Input.IsKeyDown(Keys.Up))
+            {
+                worldRotation *= Matrix.CreateRotationX(-MathHelper.PiOver4 / 60);
+            }
             if (Input.IsKeyDown(Keys.Down))
             {
                 worldRotation *= Matrix.CreateRotationX(MathHelper.PiOver4 / 60);
             }
-
+            if (Input.IsKeyDown(Keys.Left))
+            {
+                worldRotation *= Matrix.CreateRotationY(-MathHelper.PiOver4 / 60);
+            }
             if (Input.IsKeyDown(Keys.Right))
             {
                 worldRotation *= Matrix.CreateRotationY(MathHelper.PiOver4 / 60);
             }
 
+            if (Input.IsKeyDown(Keys.W))
+            {
+                camera.MoveCamera(new Vector3(0, 0, -1));
+            }
+            if (Input.IsKeyDown(Keys.A))
+            {
+                camera.MoveCamera(new Vector3(-1, 0, 0));
+            }
+            if (Input.IsKeyDown(Keys.S))
+            {
+                camera.MoveCamera(new Vector3(0, 0, 1));
+            }
+            if (Input.IsKeyDown(Keys.D))
+            {
+                camera.MoveCamera(new Vector3(1, 0, 0));
+            }
+
             Input.Update();
+            camera.Update();
 
             base.Update(gameTime);
         }
