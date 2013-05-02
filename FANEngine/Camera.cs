@@ -46,21 +46,13 @@ namespace FANEngine
             view = Matrix.CreateLookAt(initialPos, target, up);
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, game.GraphicsDevice.Viewport.AspectRatio, 0.1f, 100.0f);
 
-            position = initialPos;
-            
+            position = initialPos;            
         }
 
         public void Update()
         {
-            view = Matrix.CreateLookAt(position, Vector3.Forward, Vector3.Up);
+            view = Matrix.CreateLookAt(position, Vector3.Forward + position, Vector3.Up);
         }
-
-        //private Matrix CreateLookAt()
-        //{
-        //    Matrix v = Matrix.CreateLookAt(new Vector3(0, 0, 3), Vector3.Forward, Vector3.Up);
-
-        //    return v;
-        //}
 
         private Matrix CreatePerspectiveFieldOfView()
         {
